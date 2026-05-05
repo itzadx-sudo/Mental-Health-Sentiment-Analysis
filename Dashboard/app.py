@@ -13,6 +13,7 @@ from functions import (
 )
 from dash_iconify import DashIconify
 from visualizations import (
+    COLOR_PALETTE,
     create_category_distribution_bar,
     create_sentiment_distribution_stacked,
     create_sentiment_intensity_analysis,
@@ -30,12 +31,15 @@ import plotly.graph_objects as go
 MAX_WORD_LEN = 500
 PAGE_SIZE = 50
 
-COLOR_PALETTE = [
-    '#0072FF', '#00B4DB', '#0891B2', '#06B6D4', '#14B8A6',
-    '#10B981', '#22C55E', '#84CC16', '#EAB308', '#F59E0B',
-    '#F97316', '#EF4444', '#EC4899', '#D946EF', '#A855F7',
-    '#8B5CF6', '#6366F1', '#3B82F6', '#0EA5E9', '#06B6D4',
-]
+_LABEL_STYLE = {
+    'color': 'rgba(30, 41, 59, 0.85)',
+    'fontSize': '13px',
+    'fontWeight': '700',
+    'marginBottom': '10px',
+    'display': 'block',
+    'textTransform': 'uppercase',
+    'letterSpacing': '0.8px'
+}
 
 stored_figures = {}
 
@@ -160,6 +164,19 @@ def create_modal():
     ], id='chart-modal', className='modal', style={'display': 'none'})
 
 
+def create_chart_card(fig, key, height=450):
+    return html.Div([
+        dcc.Graph(
+            id={'type': 'modal-chart', 'index': key},
+            figure=fig,
+            config={'displayModeBar': False},
+            style={'height': f'{height}px', 'width': '100%'},
+            clear_on_unhover=True
+        )
+    ], className='chart-container', style={'cursor': 'pointer'},
+        id={'type': 'modal-trigger', 'index': key})
+
+
 #Page Rendering Functions
 
 def render_overview():
@@ -272,56 +289,12 @@ def render_metrics():
         html.P("Key dataset metrics and statistical summary",
                style={'color': 'rgba(30, 41, 59, 0.6)', 'fontSize': '14px', 'marginTop': '-10px'}),
         html.Div([
-            html.Div([
-                html.Div([
-                    dcc.Graph(
-                        id={'type': 'modal-chart', 'index': 'metric_dist_bar'},
-                        figure=fig_dist_bar,
-                        config={'displayModeBar': False},
-                        style={'height': '450px', 'width': '100%'},
-                        clear_on_unhover=True
-                    )
-                ], className='chart-container', style={'cursor': 'pointer'},
-                    id={'type': 'modal-trigger', 'index': 'metric_dist_bar'})
-            ], className='col-6'),
-            html.Div([
-                html.Div([
-                    dcc.Graph(
-                        id={'type': 'modal-chart', 'index': 'metric_summary_table'},
-                        figure=fig_summary_table,
-                        config={'displayModeBar': False},
-                        style={'height': '450px', 'width': '100%'},
-                        clear_on_unhover=True
-                    )
-                ], className='chart-container', style={'cursor': 'pointer'},
-                    id={'type': 'modal-trigger', 'index': 'metric_summary_table'})
-            ], className='col-6'),
+            html.Div(create_chart_card(fig_dist_bar, 'metric_dist_bar'), className='col-6'),
+            html.Div(create_chart_card(fig_summary_table, 'metric_summary_table'), className='col-6'),
         ], className='row'),
         html.Div([
-            html.Div([
-                html.Div([
-                    dcc.Graph(
-                        id={'type': 'modal-chart', 'index': 'metric_word_len'},
-                        figure=fig_word_len,
-                        config={'displayModeBar': False},
-                        style={'height': '450px', 'width': '100%'},
-                        clear_on_unhover=True
-                    )
-                ], className='chart-container', style={'cursor': 'pointer'},
-                    id={'type': 'modal-trigger', 'index': 'metric_word_len'})
-            ], className='col-6'),
-            html.Div([
-                html.Div([
-                    dcc.Graph(
-                        id={'type': 'modal-chart', 'index': 'metric_subjectivity'},
-                        figure=fig_subjectivity,
-                        config={'displayModeBar': False},
-                        style={'height': '450px', 'width': '100%'},
-                        clear_on_unhover=True
-                    )
-                ], className='chart-container', style={'cursor': 'pointer'},
-                    id={'type': 'modal-trigger', 'index': 'metric_subjectivity'})
-            ], className='col-6'),
+            html.Div(create_chart_card(fig_word_len, 'metric_word_len'), className='col-6'),
+            html.Div(create_chart_card(fig_subjectivity, 'metric_subjectivity'), className='col-6'),
         ], className='row')
     ])
 
@@ -355,58 +328,14 @@ def render_sentiment():
                    style={'color': 'rgba(30, 41, 59, 0.6)', 'fontSize': '14px', 'marginTop': '-10px'}),
             html.H3("Distribution and Intensity", className='subsection-header'),
             html.Div([
-                html.Div([
-                    html.Div([
-                        dcc.Graph(
-                            id={'type': 'modal-chart', 'index': 'sent_stacked'},
-                            figure=fig_stacked,
-                            config={'displayModeBar': False},
-                            style={'height': '450px', 'width': '100%'},
-                            clear_on_unhover=True
-                        )
-                    ], className='chart-container', style={'cursor': 'pointer'},
-                        id={'type': 'modal-trigger', 'index': 'sent_stacked'})
-                ], className='col-6'),
-                html.Div([
-                    html.Div([
-                        dcc.Graph(
-                            id={'type': 'modal-chart', 'index': 'sent_intensity'},
-                            figure=fig_intensity,
-                            config={'displayModeBar': False},
-                            style={'height': '450px', 'width': '100%'},
-                            clear_on_unhover=True
-                        )
-                    ], className='chart-container', style={'cursor': 'pointer'},
-                        id={'type': 'modal-trigger', 'index': 'sent_intensity'})
-                ], className='col-6'),
+                html.Div(create_chart_card(fig_stacked, 'sent_stacked'), className='col-6'),
+                html.Div(create_chart_card(fig_intensity, 'sent_intensity'), className='col-6'),
             ], className='row'),
             html.Hr(style={'border': 'none', 'borderTop': '1px solid rgba(148,163,184,0.15)', 'margin': '40px 0'}),
             html.H3("Complexity and Polarity", className='subsection-header'),
             html.Div([
-                html.Div([
-                    html.Div([
-                        dcc.Graph(
-                            id={'type': 'modal-chart', 'index': 'sent_complexity'},
-                            figure=fig_complexity,
-                            config={'displayModeBar': False},
-                            style={'height': '450px', 'width': '100%'},
-                            clear_on_unhover=True
-                        )
-                    ], className='chart-container', style={'cursor': 'pointer'},
-                        id={'type': 'modal-trigger', 'index': 'sent_complexity'})
-                ], className='col-6'),
-                html.Div([
-                    html.Div([
-                        dcc.Graph(
-                            id={'type': 'modal-chart', 'index': 'sent_treemap'},
-                            figure=fig_treemap,
-                            config={'displayModeBar': False},
-                            style={'height': '450px', 'width': '100%'},
-                            clear_on_unhover=True
-                        )
-                    ], className='chart-container', style={'cursor': 'pointer'},
-                        id={'type': 'modal-trigger', 'index': 'sent_treemap'})
-                ], className='col-6'),
+                html.Div(create_chart_card(fig_complexity, 'sent_complexity'), className='col-6'),
+                html.Div(create_chart_card(fig_treemap, 'sent_treemap'), className='col-6'),
             ], className='row'),
         ])
     except Exception as e:
@@ -427,15 +356,7 @@ def render_text():
                style={'color': 'rgba(30, 41, 59, 0.6)', 'fontSize': '14px', 'marginTop': '-10px'}),
         html.Div([
             html.Div([
-                html.Label("Select Category", style={
-                    'color': 'rgba(30, 41, 59, 0.85)',
-                    'fontSize': '13px',
-                    'fontWeight': '700',
-                    'marginBottom': '10px',
-                    'display': 'block',
-                    'textTransform': 'uppercase',
-                    'letterSpacing': '0.8px'
-                }),
+                html.Label("Select Category", style=_LABEL_STYLE),
                 dcc.Dropdown(
                     id='text-category-dropdown',
                     options=[{'label': cat, 'value': cat} for cat in label_counts.index],
@@ -473,15 +394,7 @@ def render_data():
         html.Div([
             html.Div([
                 html.Div([
-                    html.Label("Filter by Categories", style={
-                        'color': 'rgba(30, 41, 59, 0.85)',
-                        'fontSize': '13px',
-                        'fontWeight': '700',
-                        'marginBottom': '10px',
-                        'display': 'block',
-                        'textTransform': 'uppercase',
-                        'letterSpacing': '0.8px'
-                    }),
+                    html.Label("Filter by Categories", style=_LABEL_STYLE),
                     dcc.Dropdown(
                         id='data-category-dropdown',
                         options=[{'label': 'All Categories', 'value': 'all'}] + [{'label': cat, 'value': cat} for cat in
@@ -493,15 +406,7 @@ def render_data():
             ], className='col-4'),
             html.Div([
                 html.Div([
-                    html.Label("Min Word Length", style={
-                        'color': 'rgba(30, 41, 59, 0.85)',
-                        'fontSize': '13px',
-                        'fontWeight': '700',
-                        'marginBottom': '10px',
-                        'display': 'block',
-                        'textTransform': 'uppercase',
-                        'letterSpacing': '0.8px'
-                    }),
+                    html.Label("Min Word Length", style=_LABEL_STYLE),
                     dcc.Input(
                         id='min-word-filter',
                         type='number',
@@ -514,15 +419,7 @@ def render_data():
             ], className='col-4'),
             html.Div([
                 html.Div([
-                    html.Label("Max Word Length", style={
-                        'color': 'rgba(30, 41, 59, 0.85)',
-                        'fontSize': '13px',
-                        'fontWeight': '700',
-                        'marginBottom': '10px',
-                        'display': 'block',
-                        'textTransform': 'uppercase',
-                        'letterSpacing': '0.8px'
-                    }),
+                    html.Label("Max Word Length", style=_LABEL_STYLE),
                     dcc.Input(
                         id='max-word-filter',
                         type='number',
@@ -763,30 +660,8 @@ def update_text_analysis(category):
     stored_figures['text_bigrams'] = fig_bigram
 
     return html.Div([
-        html.Div([
-            html.Div([
-                dcc.Graph(
-                    id={'type': 'modal-chart', 'index': 'text_words'},
-                    figure=fig_word,
-                    config={'displayModeBar': False},
-                    style={'height': '500px', 'width': '100%'},
-                    clear_on_unhover=True
-                )
-            ], className='chart-container', style={'cursor': 'pointer'},
-                id={'type': 'modal-trigger', 'index': 'text_words'})
-        ], className='col-6'),
-        html.Div([
-            html.Div([
-                dcc.Graph(
-                    id={'type': 'modal-chart', 'index': 'text_bigrams'},
-                    figure=fig_bigram,
-                    config={'displayModeBar': False},
-                    style={'height': '500px', 'width': '100%'},
-                    clear_on_unhover=True
-                )
-            ], className='chart-container', style={'cursor': 'pointer'},
-                id={'type': 'modal-trigger', 'index': 'text_bigrams'})
-        ], className='col-6'),
+        html.Div(create_chart_card(fig_word, 'text_words', height=500), className='col-6'),
+        html.Div(create_chart_card(fig_bigram, 'text_bigrams', height=500), className='col-6'),
     ], className='row')
 
 
