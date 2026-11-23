@@ -4,7 +4,7 @@ An interactive web dashboard for analyzing sentiment patterns in social media po
 
 ## Overview
 
-This project processes 94,000+ social media statements across mental health categories (Anxiety, Depression, Stress, Bipolar Disorder, Suicidal thoughts, and Normal) to surface sentiment trends, word patterns, and statistical summaries through a visually rich, multi-page dashboard.
+This project processes 51,192 social media statements across seven categories (Anxiety, Depression, Stress, Bipolar, Suicidal, Personality disorder, and Normal) to surface sentiment trends, word patterns, and statistical summaries through a visually rich, multi-page dashboard.
 
 ## Features
 
@@ -29,7 +29,7 @@ This project processes 94,000+ social media statements across mental health cate
 ## Dataset
 
 - **Source:** [Kaggle — Sentiment Analysis for Mental Health](https://www.kaggle.com/datasets/suchintikasarkar/sentiment-analysis-for-mental-health)
-- **Size:** ~31 MB, 94,023 records
+- **Size:** ~31 MB, 53,043 raw records; the dashboard analyses 51,192 after dropping empty rows and posts over 500 words
 - **Columns:** `statement` (post text), `status` (mental health category)
 - **Categories:** Anxiety, Depression, Suicidal, Bipolar, Stress, Normal, Personality Disorder
 
@@ -71,7 +71,7 @@ Open your browser and navigate to **http://localhost:8050**
 
 ## Key Findings
 
-- Depression is the most represented category in the dataset
+- Normal is the largest category in the dataset, followed by Depression and Suicidal
 - Posts related to Suicidal thoughts and Depression show higher negative polarity than Normal posts
 - Negative sentiment posts significantly outnumber positive ones across all mental health categories
 - Distinct keyword patterns emerge per category, confirming category-specific linguistic profiles
@@ -84,10 +84,8 @@ Open your browser and navigate to **http://localhost:8050**
 
 ## Team
 
-| Name | Student ID |
-|------|-----------|
-| Aditya Jain | [removed] |
-| Ryan Alex | [removed] |
-| Rohit Kumar Malik | [removed] |
-| Izaan Shumaiz | [removed] |
-| Mohamed Sinan | [removed] |
+- Aditya Jain
+- Ryan Alex
+- Rohit Kumar Malik
+- Izaan Shumaiz
+- Mohamed Sinan
