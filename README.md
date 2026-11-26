@@ -4,7 +4,7 @@ An interactive web dashboard for analyzing sentiment patterns in social media po
 
 ## Overview
 
-This project processes 51,192 social media statements across seven categories (Anxiety, Depression, Stress, Bipolar, Suicidal, Personality disorder, and Normal) to surface sentiment trends, word patterns, and statistical summaries through a visually rich, multi-page dashboard.
+This project processes 49,645 social media statements across seven categories (Anxiety, Depression, Stress, Bipolar, Suicidal, Personality disorder, and Normal) to surface sentiment trends, word patterns, and statistical summaries through a visually rich, multi-page dashboard.
 
 ## Features
 
@@ -29,7 +29,7 @@ This project processes 51,192 social media statements across seven categories (A
 ## Dataset
 
 - **Source:** [Kaggle — Sentiment Analysis for Mental Health](https://www.kaggle.com/datasets/suchintikasarkar/sentiment-analysis-for-mental-health)
-- **Size:** ~31 MB, 53,043 raw records; the dashboard analyses 51,192 after dropping empty rows and posts over 500 words
+- **Size:** ~31 MB, 53,043 raw records; the dashboard analyses 49,645 after dropping empty rows, duplicates, and posts over 500 words
 - **Columns:** `statement` (post text), `status` (mental health category)
 - **Categories:** Anxiety, Depression, Suicidal, Bipolar, Stress, Normal, Personality Disorder
 
@@ -44,8 +44,9 @@ Mental-Health-Sentiment-Analysis/
 │   ├── functions.py        # Data loading, NLP, and sentiment processing
 │   ├── visualizations.py   # Plotly chart builders
 │   └── design.py           # CSS stylesheet (glassmorphism theme)
-└── User Guide/
-    └── User Guide.docx
+├── User Guide/
+│   └── User Guide.md       # Step-by-step setup guide (Windows, macOS, Linux)
+└── requirements.txt
 ```
 
 ## Installation & Setup

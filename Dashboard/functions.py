@@ -74,6 +74,11 @@ def load_data():
 
     # Data Cleaning
 
+    # Drop unnamed index columns (e.g., 'Unnamed: 0') so deduplication works properly
+    unnamed_cols = [col for col in df.columns if col.startswith('Unnamed:')]
+    if unnamed_cols:
+        df = df.drop(columns=unnamed_cols)
+
     # Rename 'status' to 'label' if 'label' doesn't exist
     if 'status' in df.columns and 'label' not in df.columns:
         df = df.rename(columns={'status': 'label'})
@@ -83,13 +88,15 @@ def load_data():
     print("CLEANING DATA...")
     original_rows = len(df)
 
-    # Drop duplicates and rows with missing values
-    df = df.drop_duplicates()
+    # Drop rows with missing/empty values and duplicate records
     df = df.dropna()
 
     # Ensure 'statement' column has content
     if 'statement' in df.columns:
         df = df[df['statement'].astype(str).str.strip().str.len() > 0]
+
+    subset_cols = [col for col in ['statement', 'label'] if col in df.columns]
+    df = df.drop_duplicates(subset=subset_cols if subset_cols else None)
 
     # Reset index after dropping rows
     df = df.reset_index(drop=True)

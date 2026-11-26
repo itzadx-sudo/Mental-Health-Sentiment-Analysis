@@ -214,7 +214,8 @@ def render_overview():
         html.H3("Analysis Conducted", className='subsection-header'),
         html.Ul([
             html.Li(
-                "Data Processing: Loaded 53,043 raw statements, removed 362 null values (retaining 99.3% of data), "
+                "Data Processing: Loaded 53,043 raw statements, removed 362 null values, 1,588 duplicates, "
+                "and 1,448 posts over 500 words (analysing 49,645 statements, 93.6% of raw data), "
                 "and applied TextBlob for sentiment scores."),
             html.Li("Feature Engineering: Calculated word count, polarity, and subjectivity."),
             html.Li(
@@ -228,7 +229,7 @@ def render_overview():
             html.Li(
                 "Posts about Anxiety, Depression, Suicidal thoughts have higher negative sentiment than Normal posts"),
             html.Li("Specific keywords appear more frequently in mental health condition posts"),
-            html.Li("Distribution of categories is uneven (Depression dominates)"),
+            html.Li("Distribution of categories is uneven (Normal is largest, followed by Depression and Suicidal)"),
             html.Li("Negative sentiment posts are frequent than positive ones"),
         ], style={'listStyleType': 'disc', 'paddingLeft': '20px', 'marginBottom': '16px',
                   'color': 'rgba(30, 41, 59, 0.8)'}),
@@ -485,7 +486,7 @@ def render_results():
         result="Confirmed",
         icon="mdi:check-circle-outline",
         icon_color="#10B981",
-        description="The 'Category Distribution' chart on the 'Metrics' page clearly validates this. 'Depression' is the most dominant category, which is a critical context for the entire analysis."
+        description="The 'Category Distribution' chart on the 'Metrics' page clearly validates this. 'Normal' is the largest category overall, followed by 'Depression' (the largest mental health condition category) and 'Suicidal', which provides critical context for the entire analysis."
     )
 
     card4 = create_hypothesis_card(
